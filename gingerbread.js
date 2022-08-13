@@ -65,6 +65,8 @@ class GingerBread extends EventEmitter {
    */
   bake = async () => {
 
+
+
     // - load contracts from pangolin
     const PangolinFactory = new ethers.Contract(pangolin['ADDRESS'], pangolin['ABI'], this.wallet);
     const pangolinPairAddress = await PangolinFactory.getPair(this.token0, this.token1);
@@ -258,6 +260,7 @@ class GingerBread extends EventEmitter {
   }
 
 }
+
 
 
 module.exports = GingerBread;
