@@ -311,4 +311,5 @@ class GingerBread extends EventEmitter {
   };
 }
 
+
 module.exports = GingerBread;
