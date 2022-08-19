@@ -1,16 +1,3 @@
-// import "dotenv/config.js";
-// import { ethers, BigNumber } from "ethers";
-// import chalk from "chalk";
-// import Joi from "joi";
-// import EventEmitter from "events";
-// import pangolin from "./dex/pangolin.js";
-// import traderjoe from "./dex/traderjoe.js";
-// import { abi as pangolinPairAbi } from "@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinPair.sol/IPangolinPair.json";
-// import { abi as traderjoePairAbi } from "@traderjoe-xyz/core/artifacts/contracts/traderjoe/interfaces/IJoePair.sol/IJoePair.json";
-// import flashSwap from "./artifacts/contracts/FlashSwapper.sol/FlashSwapper.json";
-// import ERC20 from "./ERC20.js";
-// import convertToAvax from "./utils/convertToAvax.js";
-
 const { ethers, BigNumber } = require("ethers");
 const chalk = require("chalk");
 const Joi = require("joi");
