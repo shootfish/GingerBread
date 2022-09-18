@@ -4,6 +4,7 @@ const Joi = require("joi");
 const EventEmitter = require("events");
 const pangolin = require("./dex/pangolin.js");
 const traderjoe = require("./dex/traderjoe.js");
+const { FlashbotsBundleProvider, } = require("@flashbots/ethers-provider-bundle");
 const {
   abi: pangolinPairAbi
 } = require("@pangolindex/exchange-contracts/artifacts/contracts/pangolin-core/interfaces/IPangolinPair.sol/IPangolinPair.json");
@@ -225,15 +226,38 @@ class GingerBread extends EventEmitter {
           ethers.utils.parseEther(`${volumeToBorrow}`).toString(),
           { gasLimit }
         );
-        await arbitrageTx.wait();
-        this.emit("tx-hash", { hash: arbitrageTx.hash });
-        freeze = false;
+        // await arbitrageTx.wait();
+        // this.emit("tx-hash", { hash: arbitrageTx.hash });
+        // freeze = false;
         // -------------------------------------------------------->
+        const provider = new ethers.providers.JsonRpcProvider({
+          url: process.env.C_CHAIN_NODE,
+        });
+        
+        const authSigner = new ethers.Wallet(
+          process.env.AUTH_SIGNER
+        );
+        const flashbotsProvider = await FlashbotsBundleProvider.create(
+          provider,
+          authSigner
+        );
+        
+        const signedBundle = await flashbotsProvider.signBundle([
+          {
+            signer: authSigner,
+            transaction: arbitrageTx,
+          },
+        ]);
+        
+        const bundleReceipt = await flashbotsProvider.sendRawBundle(
+          signedBundle,
+          TARGET_BLOCK_NUMBER
+        );
       } catch (err) {
         console.log(new Error(err.message));
         setTimeout(() => (freeze = false), 5 * 1000); // 10 seconds freeze period if error occurs
       }
-    });
+    });   
   };
 
   /**
